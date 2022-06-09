@@ -1,0 +1,85 @@
+﻿@page "/students"
+@inject IStudentService StudentService
+@inject IJSRuntime js
+@inject NavigationManager navigator
+
+
+<h3>Students 22</h3>
+<table>
+    <tr>
+        <th @onclick="@(() => Sort("Avatar"))">Avatar</th>
+        <th @onclick="@(() => Sort("FirstName"))">FirstName</th>
+        <th @onclick="@(() => Sort("LastName"))">LastName</th>
+        <th @onclick="@(() => Sort("Birthdate"))">Birthdate</th>
+        <th @onclick="@(() => Sort("Studies"))">Studies</th>
+        <th>Actions</th>
+    </tr>
+    @foreach(var stud in StudentsList)
+    {
+        <tr>
+            <td>@stud.Avatar</td>
+            <td>@stud.FirstName</td>
+            <td>@stud.LastName</td>
+            <td>@stud.Birthdate.ToLongDateString()</td>
+            <td>@stud.Studies</td>
+            <td>
+                <button @onclick="(() => Delete(stud.ID))">Delete</button>
+                <button @onclick="(() => ShowDetails(stud.ID))">Details</button>
+            </td>
+        </tr>
+    }
+</table>
+
+
+@code {
+    public List<Student> StudentsList { get; set; }
+    public KeyValuePair<string, bool> ColumnSort { get; set; } = new KeyValuePair<string, bool>("", false);
+
+    private void Sort(string columnName)
+    {
+        if(ColumnSort.Key != columnName)
+        {
+            ColumnSort = new KeyValuePair<string, bool>(columnName, false);
+        } else
+        {
+            ColumnSort = new KeyValuePair<string, bool>(columnName, !ColumnSort.Value);
+        }
+
+        if (ColumnSort.Value)
+        {
+            SortListAsc(columnName);
+        }else
+        {
+            SortListDesc(columnName);
+        }
+    }
+
+    private void SortListDesc(string columnName)
+    {
+        StudentsList = StudentsList.OrderByDescending(e => e.GetType().GetProperty(columnName).GetValue(e, null)).ToList();
+    }
+
+    private void SortListAsc(string columnName)
+    {
+        StudentsList = StudentsList.OrderBy(e => e.GetType().GetProperty(columnName).GetValue(e, null)).ToList();
+    }
+
+    protected override void OnInitialized()
+    {
+        StudentsList = StudentService.GetStudents();
+    }
+
+    private async Task Delete(int id)
+    {
+        var result =await js.InvokeAsync<bool>("confirm", "Are you sure?");
+        if (result)
+        {
+            StudentService.Remove(id);
+        }
+    }
+
+    private void ShowDetails(int id)
+    {
+        navigator.NavigateTo("/students/" + id);
+    }
+}

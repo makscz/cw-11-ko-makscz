@@ -1,0 +1,28 @@
+﻿th[b-zr4hfffqtd], td[b-zr4hfffqtd] {
+    border: 2px solid;
+    text-align: center;
+}
+
+tr > td:last-child[b-zr4hfffqtd], th:last-child[b-zr4hfffqtd] {
+    border: 0;
+}
+
+#delete[b-zr4hfffqtd] {
+    background-color: red;
+}
+
+th:hover[b-zr4hfffqtd] {
+    cursor: pointer;
+}
+
+button[b-zr4hfffqtd] {
+    border: 0.5px solid;
+}
+
+input[b-zr4hfffqtd] {
+    background-color: dodgerblue;
+}
+
+.students[b-zr4hfffqtd] {
+    padding: 30px;
+}

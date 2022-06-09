@@ -1,0 +1,28 @@
+﻿﻿th, td {
+    border: 2px solid;
+    text-align: center;
+}
+
+tr > td:last-child, th:last-child {
+    border: 0;
+}
+
+#delete {
+    background-color: red;
+}
+
+th:hover {
+    cursor: pointer;
+}
+
+button {
+    border: 0.5px solid;
+}
+
+input {
+    background-color: dodgerblue;
+}
+
+.students {
+    padding: 30px;
+}
